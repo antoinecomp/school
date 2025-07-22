@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://devopsia.fr/sitemap.xml
+
+# Disallow certain files
+Disallow: /js/
+Disallow: /css/
+Allow: /css/styles.css
+
+# Allow important pages
+Allow: /
+Allow: /qui-sommes-nous.html
+Allow: /tarifs.html
