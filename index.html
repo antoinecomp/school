@@ -212,5 +212,18 @@
 
     <!-- Scripts -->
     <script src="js/components.js"></script>
+    <script>
+      fetch('components/header.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('header-placeholder').innerHTML = html;
+    
+          // Recharger manuellement les scripts du header
+          const script = document.createElement('script');
+          script.src = 'components/header.js';
+          document.body.appendChild(script);
+        });
+    </script>
+
 </body>
 </html>
