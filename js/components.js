@@ -139,3 +139,88 @@ if (document.readyState === 'loading') {
 
 // Export pour utilisation manuelle si nécessaire
 window.ComponentLoader = ComponentLoader;
+
+/**
+ * Gestion de la navigation responsive
+ */
+class ResponsiveNav {
+    constructor() {
+        this.menuToggle = null;
+        this.navLinks = null;
+        this.body = document.body;
+        
+        // Attendre que le header soit chargé
+        setTimeout(() => this.init(), 200);
+    }
+
+    init() {
+        this.menuToggle = document.querySelector('.menu-toggle');
+        this.navLinks = document.querySelector('.nav-links');
+        
+        if (this.menuToggle && this.navLinks) {
+            this.menuToggle.addEventListener('click', () => this.toggleMenu());
+            
+            // Fermer le menu quand on clique sur un lien
+            this.navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => this.closeMenu());
+            });
+
+            // Fermer le menu avec Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.navLinks.classList.contains('active')) {
+                    this.closeMenu();
+                }
+            });
+
+            // Fermer le menu si on redimensionne vers desktop
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    this.closeMenu();
+                }
+            });
+        }
+    }
+
+    toggleMenu() {
+        if (!this.navLinks) return;
+        
+        const isActive = this.navLinks.classList.contains('active');
+        
+        if (isActive) {
+            this.closeMenu();
+        } else {
+            this.openMenu();
+        }
+    }
+
+    openMenu() {
+        this.navLinks.classList.add('active');
+        this.menuToggle.classList.add('active');
+        this.menuToggle.setAttribute('aria-expanded', 'true');
+        this.body.style.overflow = 'hidden'; // Empêcher le scroll
+    }
+
+    closeMenu() {
+        this.navLinks.classList.remove('active');
+        this.menuToggle.classList.remove('active');
+        this.menuToggle.setAttribute('aria-expanded', 'false');
+        this.body.style.overflow = ''; // Restaurer le scroll
+    }
+}
+
+// Modifier la fin de votre fichier component.js existant
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        const loader = new ComponentLoader();
+        loader.init();
+        new ResponsiveNav(); // Ajouter cette ligne
+    });
+} else {
+    const loader = new ComponentLoader();
+    loader.init();
+    new ResponsiveNav(); // Ajouter cette ligne
+}
+
+// Export pour utilisation manuelle si nécessaire
+window.ComponentLoader = ComponentLoader;
+window.ResponsiveNav = ResponsiveNav; // Ajouter cette ligne
